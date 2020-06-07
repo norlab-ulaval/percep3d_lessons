@@ -10,6 +10,7 @@ from mpl_toolkits.mplot3d import proj3d
 from matplotlib.text import Annotation
 from matplotlib.patches import FancyArrowPatch
 from mpl_toolkits.mplot3d.art3d import Poly3DCollection
+import os
 
 def draw_3d_basis_vector(ax, head, text="", origin=[0,0,0], text_offset=[0,0,0], *args, **kwargs):
     text_global = origin + head + text_offset
@@ -127,3 +128,8 @@ def generate_cube():
     return np.array([[-1,  1,  1, -1, -1,  1,  1, -1],
                      [-1, -1,  1,  1, -1, -1,  1,  1],
                      [-1, -1, -1, -1,  1,  1,  1,  1]])
+
+def get_root_path():
+    path = os.getcwd()
+    root_parent_path = path[:path.rfind("percep3d")]
+    return path[:path.find("/", len(root_parent_path))]
