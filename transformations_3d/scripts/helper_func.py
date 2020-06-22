@@ -160,3 +160,23 @@ def build_cercle_xy(radius, res):
     y = radius*np.sin(theta)
     z = np.zeros_like(x)
     return np.array([x,y,z])
+
+def skew(x):
+    return np.array([[0, -x[2], x[1]],
+                     [x[2], 0, -x[0]],
+                     [-x[1], x[0], 0]])
+
+class Axis_angle:
+    def __init__(self, e):
+        self.e = e
+        
+    def to_mat(self, theta):
+        return (np.cos(theta)*np.eye(3) +
+                np.sin(theta)*skew(self.e) +
+                (1-np.cos(theta))*np.outer(self.e,self.e)
+               )
+    
+    def rotate_point(self, v, theta):
+        return (v*np.cos(theta) + 
+                np.cross(self.e,v)*np.sin(theta) +
+                (1-np.cos(theta))*np.dot(self.e,v)*self.e)
