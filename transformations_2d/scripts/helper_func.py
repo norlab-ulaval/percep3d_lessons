@@ -112,13 +112,13 @@ def draw_3d_basis_vector(ax, head, text="", origin=[0,0,0], text_offset=[0,0,0])
     ax.text(text_global[0], text_global[1], text_global[2], text, size=30)
     return
 
-def draw_3d_frame(ax, origin = np.array([0,0,0]), 
-                  x = np.array([1,0,0]), y = np.array([0,1,0]), z = np.array([0,0,1]),
-                  text_x=r"$\vec{\mathscr{x}}$", text_y=r"$\vec{\mathscr{y}}$", text_z=r"$\vec{\mathscr{z}}$"):
-    draw_3d_basis_vector(ax, x, origin=origin, text=text_x)
-    draw_3d_basis_vector(ax, y, origin=origin, text=text_y)
-    draw_3d_basis_vector(ax, z, origin=origin, text=text_z)
-    return
+#def draw_3d_frame(ax, origin = np.array([0,0,0]), 
+#                  x = np.array([1,0,0]), y = np.array([0,1,0]), z = np.array([0,0,1]),
+#                  text_x=r"$\vec{\mathscr{x}}$", text_y=r"$\vec{\mathscr{y}}$", text_z=r"$\vec{\mathscr{z}}$"):
+#    draw_3d_basis_vector(ax, x, origin=origin, text=text_x)
+#    draw_3d_basis_vector(ax, y, origin=origin, text=text_y)
+#    draw_3d_basis_vector(ax, z, origin=origin, text=text_z)
+#    return
 
 def display_geometric_quantities_2d(P, P_prime):
     p = P[0:2,0]
