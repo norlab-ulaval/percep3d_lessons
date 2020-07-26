@@ -10,29 +10,41 @@ from mpl_toolkits.mplot3d import proj3d
 from matplotlib.text import Annotation
 from matplotlib.patches import FancyArrowPatch
 from mpl_toolkits.mplot3d.art3d import Poly3DCollection
+import os
 
-def draw_3d_basis_vector(ax, head, text="", origin=[0,0,0], text_offset=[0,0,0], *args, **kwargs):
+def draw_3d_basis_vector(ax, head, text="", origin=[0,0,0], text_offset=[0,0,0], size=20, *args, **kwargs):
     text_global = origin + head + text_offset
     ax.quiver(origin[0], origin[1], origin[2], 
                head[0], head[1], head[2], length=1., normalize=True, *args, **kwargs)
-    ax.text(text_global[0], text_global[1], text_global[2], text, size=20, *args, **kwargs)
+    ax.text(text_global[0], text_global[1], text_global[2], text, size=size, *args, **kwargs)
     return
 
 def draw_3d_frame(ax, origin = np.array([0,0,0]), 
-                  x = np.array([1,0,0]), y = np.array([0,1,0]), z = np.array([0,0,1]),
-                  text_x=r"$\vec{\mathscr{x}}$", text_y=r"$\vec{\mathscr{y}}$", text_z=r"$\vec{\mathscr{z}}$",
+                  x = np.array([1,0,0]), 
+                  y = np.array([0,1,0]), 
+                  z = np.array([0,0,1]),
+                  text_x=r"$\vec{\mathscr{x}}$",
+                  text_y=r"$\vec{\mathscr{y}}$",
+                  text_z=r"$\vec{\mathscr{z}}$",
+                  size=20,
                   *args, **kwargs):
-    draw_3d_basis_vector(ax, x, origin=origin, text=text_x, *args, **kwargs)
-    draw_3d_basis_vector(ax, y, origin=origin, text=text_y, *args, **kwargs)
-    draw_3d_basis_vector(ax, z, origin=origin, text=text_z, *args, **kwargs)
+
+    draw_3d_basis_vector(ax, x, origin=origin, text=text_x, 
+                         size=size, *args, **kwargs)
+    draw_3d_basis_vector(ax, y, origin=origin, text=text_y,
+                         size=size, *args, **kwargs)
+    draw_3d_basis_vector(ax, z, origin=origin, text=text_z,
+                         size=size, *args, **kwargs)
     return
 
-def draw_3d_vector(ax, head=np.array([0,0,0]), text="", origin=[0,0,0], text_offset=[0,0,0], 
+def draw_3d_vector(ax, head=np.array([0,0,0]), 
+                   text="", origin=[0,0,0], text_offset=[0,0,0],
+                   size=20,
                    *args, **kwargs):
     arrow_handle = Arrow3D(head=head, origin=origin, mutation_scale=20, 
                            arrowstyle="->", *args, **kwargs)
     text_handle = Annotation3D(text, head, text_offset=text_offset,
-                               size=20, *args, **kwargs)
+                               size=size, *args, **kwargs)
     
     ax.add_artist(arrow_handle)
     ax.add_artist(text_handle)
@@ -127,3 +139,44 @@ def generate_cube():
     return np.array([[-1,  1,  1, -1, -1,  1,  1, -1],
                      [-1, -1,  1,  1, -1, -1,  1,  1],
                      [-1, -1, -1, -1,  1,  1,  1,  1]])
+
+def get_root_path():
+    path = os.getcwd()
+    root_parent_path = path[:path.rfind("percep3d")]
+    return path[:path.find("/", len(root_parent_path))]
+
+def interpolate_rot(start_point, start_param, end_param, delta, func):
+    nb_points = np.floor(np.abs((end_param - start_param)/delta)).astype('int')
+    param_array = np.linspace(start_param, end_param, nb_points)
+    points = np.empty([len(start_point), len(param_array)])
+    for i, param in enumerate(param_array):
+        points[:,i] = func(param) @ start_point
+        
+    return points
+
+def build_cercle_xy(radius, res):
+    theta = np.linspace(0., 2.*np.pi, res)
+    x = radius*np.cos(theta)
+    y = radius*np.sin(theta)
+    z = np.zeros_like(x)
+    return np.array([x,y,z])
+
+def skew(x):
+    return np.array([[0, -x[2], x[1]],
+                     [x[2], 0, -x[0]],
+                     [-x[1], x[0], 0]])
+
+class Axis_angle:
+    def __init__(self, e):
+        self.e = e
+        
+    def to_mat(self, theta):
+        return (np.cos(theta)*np.eye(3) +
+                np.sin(theta)*skew(self.e) +
+                (1-np.cos(theta))*np.outer(self.e,self.e)
+               )
+    
+    def rotate_point(self, v, theta):
+        return (v*np.cos(theta) + 
+                np.cross(self.e,v)*np.sin(theta) +
+                (1-np.cos(theta))*np.dot(self.e,v)*self.e)
