@@ -1,11 +1,17 @@
 #!/usr/bin/env python
 
+import os
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.patches import Arc, RegularPolygon
 from numpy import radians as rad
 from numpy import degrees as deg
 from IPython.display import display, Markdown
+
+def get_root_path():
+    path = os.getcwd()
+    root_parent_path = path[:path.rfind("percep3d")]
+    return path[:path.find("/", len(root_parent_path))]
 
 def draw_base_vector(ax, head, text="", origin=np.array([0., 0.]), text_offset=np.array([0., 0.]), color="tab:red", ha='right', va='top'):
     head_global = origin+head
@@ -112,13 +118,13 @@ def draw_angle_vectors(ax, v1, v2=np.array([1.,0]), text=r"$\theta$", text_offse
 #    ax.text(text_global[0], text_global[1], text_global[2], text, size=30)
 #    return
 
-#def draw_3d_frame(ax, origin = np.array([0,0,0]), 
-#                  x = np.array([1,0,0]), y = np.array([0,1,0]), z = np.array([0,0,1]),
-#                  text_x=r"$\vec{\mathscr{x}}$", text_y=r"$\vec{\mathscr{y}}$", text_z=r"$\vec{\mathscr{z}}$"):
-#    draw_3d_basis_vector(ax, x, origin=origin, text=text_x)
-#    draw_3d_basis_vector(ax, y, origin=origin, text=text_y)
-#    draw_3d_basis_vector(ax, z, origin=origin, text=text_z)
-#    return
+def draw_3d_frame(ax, origin = np.array([0,0,0]), 
+                 x = np.array([1,0,0]), y = np.array([0,1,0]), z = np.array([0,0,1]),
+                 text_x=r"$\vec{\mathscr{x}}$", text_y=r"$\vec{\mathscr{y}}$", text_z=r"$\vec{\mathscr{z}}$"):
+   draw_3d_basis_vector(ax, x, origin=origin, text=text_x)
+   draw_3d_basis_vector(ax, y, origin=origin, text=text_y)
+   draw_3d_basis_vector(ax, z, origin=origin, text=text_z)
+   return
 
 def display_geometric_quantities_2d(P, P_prime):
     p = P[0:2,0]
