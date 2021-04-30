@@ -105,12 +105,12 @@ def draw_angle_vectors(ax, v1, v2=np.array([1.,0]), text=r"$\theta$", text_offse
     draw_arc_arrow(ax, theta_v2, theta_v1, text=text, text_offset=text_offset, radius=radius, color=color, flip=flip)
     return
 
-def draw_3d_basis_vector(ax, head, text="", origin=[0,0,0], text_offset=[0,0,0]):
-    text_global = origin + head + text_offset
-    ax.quiver(origin[0], origin[1], origin[2], 
-               head[0], head[1], head[2], length=1., normalize=True)
-    ax.text(text_global[0], text_global[1], text_global[2], text, size=30)
-    return
+#def draw_3d_basis_vector(ax, head, text="", origin=[0,0,0], text_offset=[0,0,0]):
+#    text_global = origin + head + text_offset
+#    ax.quiver(origin[0], origin[1], origin[2], 
+#               head[0], head[1], head[2], length=1., normalize=True)
+#    ax.text(text_global[0], text_global[1], text_global[2], text, size=30)
+#    return
 
 #def draw_3d_frame(ax, origin = np.array([0,0,0]), 
 #                  x = np.array([1,0,0]), y = np.array([0,1,0]), z = np.array([0,0,1]),
