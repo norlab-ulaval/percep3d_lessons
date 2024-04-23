@@ -170,7 +170,7 @@ def display_geometric_quantities_2d(P, P_prime):
     
     return
 
-def rigid_tranformation(params):
+def rigid_transformation(params):
     """Returns a rigid transformation matrix
 
     :params: numpy array, params[0]=tx, params[1]=ty, params[2]=theta
@@ -180,7 +180,7 @@ def rigid_tranformation(params):
                      [np.sin(params[2]),  np.cos(params[2]), params[1]],
                      [0,0,1]])
 
-def scale_tranformation(params):
+def scale_transformation(params):
     return np.array([[params[0], 0, 0],
                      [0,  params[1], 0],
                      [0,0,1]])

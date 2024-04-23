@@ -18,7 +18,7 @@ def sorted_eig(A):
     
     return (eigenValues, eigenVectors)
 
-def rigid_tranformation(params):
+def rigid_transformation(params):
     """Returns a rigid transformation matrix
 
     :params: numpy array, params[0]=tx, params[1]=ty, params[2]=theta
@@ -58,7 +58,7 @@ def build_room(param_v, param_h, angle = 0., wall_thickness = 0.01, nb_pts = 400
 
     sensor_center[1] = mode_beta(param_h)
 
-    T = rigid_tranformation([-sensor_center[0], -sensor_center[1], angle])
+    T = rigid_transformation([-sensor_center[0], -sensor_center[1], angle])
     P = np.hstack([wall_bottom, wall_top, wall_left, wall_right])
     
     return (T @ P)
