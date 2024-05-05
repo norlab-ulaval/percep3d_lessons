@@ -23,7 +23,7 @@ def draw_base_vector(ax, head, text="", origin=np.array([0., 0.]), text_offset=n
 
     return
 
-def draw_vector(ax, head, text="", origin=np.array([0., 0.]), text_offset=np.array([0., 0.]), color="white", ha='left', va='bottom'):
+def draw_vector(ax, head, text="", origin=np.array([0., 0.]), text_offset=np.array([0., 0.]), color="blue", ha='left', va='bottom'):
     text_global = head+text_offset
                 
     ax.annotate("", xy=head, xytext=origin,
@@ -32,7 +32,7 @@ def draw_vector(ax, head, text="", origin=np.array([0., 0.]), text_offset=np.arr
     
     return
 
-def draw_point(ax, point, text="", text_offset=(0., 0.), color="white", ha='left', va='bottom'):
+def draw_point(ax, point, text="", text_offset=(0., 0.), color="blue", ha='left', va='bottom'):
     text_global = point+text_offset
                 
     ax.scatter(point[0], point[1], c=color)
@@ -40,7 +40,7 @@ def draw_point(ax, point, text="", text_offset=(0., 0.), color="white", ha='left
     
     return
 
-def draw_frame(ax, origin=np.array([0., 0.]), x = np.array([1.,0.]), y = np.array([0.,1.]), color="white", 
+def draw_frame(ax, origin=np.array([0., 0.]), x = np.array([1.,0.]), y = np.array([0.,1.]), color="blue", 
                name="", text_x="", text_y=""):
     draw_base_vector(ax, origin=origin, head=x, text=text_x, text_offset=(0., -0.1), ha='right',va='top', color=color)
     draw_base_vector(ax, origin=origin, head=y, text=text_y, text_offset=(-0.1, 0.), ha='right',va='top', color=color)
@@ -58,7 +58,7 @@ def clean_frame(ax, data, title, pad=1):
     plt.tight_layout()
     return
 
-def draw_arc_arrow(ax, angle_, theta2_, center=(0., 0.), text="", text_offset=(0., 0.), radius=1., color='white', is_rad=True, flip=False):
+def draw_arc_arrow(ax, angle_, theta2_, center=(0., 0.), text="", text_offset=(0., 0.), radius=1., color='blue', is_rad=True, flip=False):
 
     if(is_rad):
         angle_ = deg(angle_)
@@ -90,8 +90,8 @@ def draw_arc_arrow(ax, angle_, theta2_, center=(0., 0.), text="", text_offset=(0
         RegularPolygon(
             (endX, endY),            # (x,y)
             3,                       # number of vertices
-            arrow_scale,                # radius
-            rad(head_angle),     # orientation
+            radius=arrow_scale,                # radius
+            orientation=rad(head_angle),     # orientation
             color=color
         )
     )
@@ -102,7 +102,7 @@ def draw_arc_arrow(ax, angle_, theta2_, center=(0., 0.), text="", text_offset=(0
     ax.text(endX+text_offset[0], endY+text_offset[1], text, size=20)
     return
 
-def draw_angle_vectors(ax, v1, v2=np.array([1.,0]), text=r"$\theta$", text_offset=(0., 0.), color="white", radius=None, flip=False):
+def draw_angle_vectors(ax, v1, v2=np.array([1.,0]), text=r"$\theta$", text_offset=(0., 0.), color="blue", radius=None, flip=False):
     lenght_v1 = np.linalg.norm(v1)
     theta_v1 = np.arctan2(v1[1],v1[0])
     theta_v2 = np.arctan2(v2[1],v2[0])

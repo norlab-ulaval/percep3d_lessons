@@ -12,6 +12,8 @@ from matplotlib.patches import FancyArrowPatch
 from mpl_toolkits.mplot3d.art3d import Poly3DCollection
 import os
 
+
+
 def draw_3d_basis_vector(ax, head, text="", origin=[0,0,0], text_offset=[0,0,0], size=20, *args, **kwargs):
     text_global = origin + head + text_offset
     ax.quiver(origin[0], origin[1], origin[2], 
@@ -48,7 +50,6 @@ def draw_3d_vector(ax, head=np.array([0,0,0]),
     
     ax.add_artist(arrow_handle)
     ax.add_artist(text_handle)
-
     return [arrow_handle, text_handle]
     
 def rotation_matrix_z(theta):
@@ -68,37 +69,44 @@ def rotation_matrix_x(theta):
 
 class Arrow3D(FancyArrowPatch):
     def __init__(self, head, origin=[0,0,0], *args, **kwargs):
-        FancyArrowPatch.__init__(self, (0,0), (0,0), *args, **kwargs)
+        super().__init__((0,0), (0,0), *args, **kwargs)
         xs = [origin[0], head[0]]
         ys = [origin[1], head[1]]
         zs = [origin[2], head[2]]
         self._verts3d = xs, ys, zs
         self.init_style = self.get_arrowstyle()
 
-    def draw(self, renderer):
-        xs3d, ys3d, zs3d = self._verts3d
-        xs, ys, zs = proj3d.proj_transform(xs3d, ys3d, zs3d, renderer.M)
-        FancyArrowPatch.set_positions(self,(xs[0],ys[0]),(xs[1],ys[1]))
-        dx = np.abs(xs[0] - xs[1])
-        dy = np.abs(ys[0] - ys[1])
-        dz = np.abs(zs[0] - zs[1])
+    # def draw(self, renderer):
+    #     xs3d, ys3d, zs3d = self._verts3d
+    #     xs, ys, zs = proj3d.proj_transform(xs3d, ys3d, zs3d, self.axes.M)
+    #     self.set_positions((xs[0],ys[0],zs[0]),(xs[1],ys[1],zs[1]))
+    #     dx = np.abs(xs[0] - xs[1])
+    #     dy = np.abs(ys[0] - ys[1])
+    #     dz = np.abs(zs[0] - zs[1])
 
-        thresh = 0.4
-        if dx < thresh and dy < thresh:
-            factor = np.max([dx,dy])*10.
-            if factor > 0:
-                self.set_arrowstyle("->",head_length=factor, head_width=factor/2.)
-            else:
-                self.set_arrowstyle("-")
-        else:
-            self.set_arrowstyle(self.init_style)
-        FancyArrowPatch.draw(self, renderer)
+    #     thresh = 0.4
+    #     if dx < thresh and dy < thresh:
+    #         factor = np.max([dx,dy])*10.
+    #         if factor > 0:
+    #             self.set_arrowstyle("->",head_length=factor, head_width=factor/2.)
+    #         else:
+    #             self.set_arrowstyle("-")
+    #     else:
+    #         self.set_arrowstyle(self.init_style)
+    #     super().draw(renderer)
         
     def set_positions(self, head, origin=[0,0,0]):
         xs = [origin[0], head[0]]
         ys = [origin[1], head[1]]
         zs = [origin[2], head[2]]
         self._verts3d = xs, ys, zs
+        super().set_positions((xs[1],ys[1]),(xs[0],ys[0]))
+
+    def do_3d_projection(self, renderer=None):
+        xs3d, ys3d, zs3d = self._verts3d
+        xs, ys, zs = proj3d.proj_transform(xs3d, ys3d, zs3d, self.axes.M)
+        self.set_positions((xs[0],ys[0],zs[0]),(xs[1],ys[1],zs[1]))
+        return np.min(zs)
 
         
 class Annotation3D(Annotation):
@@ -111,7 +119,7 @@ class Annotation3D(Annotation):
 
     def draw(self, renderer):
         xs3d, ys3d, zs3d = self._verts3d
-        xs, ys, zs = proj3d.proj_transform(xs3d, ys3d, zs3d, renderer.M)
+        xs, ys, zs = proj3d.proj_transform(xs3d, ys3d, zs3d, self.axes.M)
         Annotation.set_position(self, (xs,ys))
         Annotation.draw(self, renderer)
         
