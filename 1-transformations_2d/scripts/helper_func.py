@@ -103,11 +103,11 @@ def draw_arc_arrow(ax, angle_, theta2_, center=(0., 0.), text="", text_offset=(0
     return
 
 def draw_angle_vectors(ax, v1, v2=np.array([1.,0]), text=r"$\theta$", text_offset=(0., 0.), color="blue", radius=None, flip=False):
-    lenght_v1 = np.linalg.norm(v1)
+    length_v1 = np.linalg.norm(v1)
     theta_v1 = np.arctan2(v1[1],v1[0])
     theta_v2 = np.arctan2(v2[1],v2[0])
     if(radius==None):
-        radius = lenght_v1
+        radius = length_v1
     draw_arc_arrow(ax, theta_v2, theta_v1, text=text, text_offset=text_offset, radius=radius, color=color, flip=flip)
     return
 
@@ -158,13 +158,13 @@ def display_geometric_quantities_2d(P, P_prime):
     table +=str("|---      |----      |---        |---"); table +="\n"
     table +=str("|p     |" +str(p) + "       | " +str(p_prime) + "    | " +str(np.allclose(p,p_prime))); table +="\n"
     table +=str("|q     |" +str(q) + "       | " +str(q_prime) + "    | " +str(np.allclose(q, q_prime))); table +="\n"
-    table +=str("|lenght of p   | %.3f        | %.3f" %(l_p, l_p_prime) + "        | " +str(np.allclose(l_p, l_p_prime))); table +="\n"
-    table +=str("|lenght of q   | %.3f        | %.3f" %(l_q, l_q_prime) + "        | " +str(np.allclose(l_q, l_q_prime))); table +="\n"
+    table +=str("|length of p   | %.3f        | %.3f" %(l_p, l_p_prime) + "        | " +str(np.allclose(l_p, l_p_prime))); table +="\n"
+    table +=str("|length of q   | %.3f        | %.3f" %(l_q, l_q_prime) + "        | " +str(np.allclose(l_q, l_q_prime))); table +="\n"
     table +=str("|direction of p   | "  + str(u_p) + "  | " +str(u_p_prime) + "  | " +str(np.allclose(u_p, u_p_prime))); table +="\n"
     table +=str("|direction of q   | "  + str(u_q) + "  | " +str(u_q_prime) + "  | " +str(np.allclose(u_q, u_q_prime))); table +="\n"
     table +=str("|dist p q| %.3f        | %.3f" %(dist, dist_prime) + "        | " +str(np.allclose(dist, dist_prime))); table +="\n"
     table +=str("|theta p q| %.3f        | %.3f" %(theta, theta_prime) + "        | " +str(np.allclose(theta, theta_prime))); table +="\n"
-    table +=str("|ratio of lenght p q| %.3f        | %.3f" %(ratio, ratio_prime) + "        | " +str(np.allclose(ratio, ratio_prime))); table +="\n"
+    table +=str("|ratio of length p q| %.3f        | %.3f" %(ratio, ratio_prime) + "        | " +str(np.allclose(ratio, ratio_prime))); table +="\n"
     table +=str("|area p q r | %.3f        | %.3f" %(area, area_prime) + "        | " +str(np.allclose(area, area_prime))); table +="\n"
     display(Markdown(table))
     
